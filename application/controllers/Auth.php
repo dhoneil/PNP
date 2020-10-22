@@ -12,6 +12,8 @@ class Auth extends Admin_Controller
 		$this->load->model('model_auth');
 	}
 
+	
+
 	/* 
 		Check if the login form is submitted, and validates the user credential
 		If not submitted it redirects to the login page
@@ -28,7 +30,8 @@ class Auth extends Admin_Controller
             // true case
            	$email_exists = $this->model_auth->check_email($this->input->post('email'));
 
-           	if($email_exists == TRUE) {
+				  if($email_exists == TRUE) 
+				  {
            		$login = $this->model_auth->login($this->input->post('email'), $this->input->post('password'));
 
            		if($login) {
@@ -40,7 +43,7 @@ class Auth extends Admin_Controller
 				        'logged_in' => TRUE
 					);
 
-					$this->session->set_userdata($logged_in_sess);
+						$this->session->set_userdata($logged_in_sess);
            			redirect('dashboard', 'refresh');
            		}
            		else {
