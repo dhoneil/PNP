@@ -109,7 +109,7 @@
               </a>
               <ul class="treeview-menu">
                 <?php if(in_array('createProduct', $user_permission)): ?>
-                  <li id="addProductNav"><a href="<?php echo base_url('products/create') ?>"><i class="fa fa-circle-o"></i> Add Product</a></li>
+                  <li id="addProductNav"><a href="<?php echo base_url('products/createv2') ?>"><i class="fa fa-circle-o"></i> Add Product <span class="label bg-green">NEW</span> </a></li>
                 <?php endif; ?>
                 <?php if(in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                 <li id="manageProductNav"><a href="<?php echo base_url('products') ?>"><i class="fa fa-circle-o"></i> Manage Products</a></li>

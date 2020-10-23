@@ -43,6 +43,29 @@ class Model_products extends CI_Model
 			return ($insert == true) ? true : false;
 		}
 	}
+	public function createv2($data)
+	{
+		if($data) {
+			$insert = $this->db->insert('productsv2', $data);
+			return ($insert == true) ? true : false;
+		}
+	}
+	public function getProductByCategory($product_category_id = null, $is_active = null)
+	{
+		$sql = "SELECT * FROM productsv2 where product_category_id = ? and is_active = ?";
+		$query = $this->db->query($sql, array($product_category_id,$is_active));
+		return $query->result_array();
+	}
+
+	public function updatev2($data, $id)
+	{
+		if($data && $id) {
+			$this->db->where('id', $id);
+			$update = $this->db->update('productsv2', $data);
+			return ($update == true) ? true : false;
+		}
+	}
+	
 
 	public function update($data, $id)
 	{

@@ -300,6 +300,100 @@ class Products extends Admin_Controller
         }
 
         echo json_encode($response);
-	}
+    }
+    
+
+
+
+
+
+
+
+
+
+
+    public function createv2()
+    {
+        if(!in_array('createProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $this->render_template('products/createv2', $this->data);
+    }
+
+    public function saveproduct()
+    {
+        $data = array(
+            'product_category_id' => $this->input->post('product_category_id'),
+            'type' => ($this->input->post('type') == null)?"":strtoupper($this->input->post('type')),
+            'make' => ($this->input->post('make') == null)?"":strtoupper($this->input->post('make')),
+            'caliber' => ($this->input->post('caliber') == null)?"":strtoupper($this->input->post('caliber')),
+            'serial' => ($this->input->post('serial') == null)?"":strtoupper($this->input->post('serial')),
+            'date_acquired' => ($this->input->post('date_acquired') == null)?"":$this->input->post('date_acquired'),
+            'cost' => ($this->input->post('cost') == null)?"":$this->input->post('cost'),
+            'item' => ($this->input->post('item') == null)?"":strtoupper($this->input->post('item')),
+            'status' => ($this->input->post('status') == null)?"":strtoupper($this->input->post('status')),
+            'source' => ($this->input->post('source') == null)?"":strtoupper($this->input->post('source')),
+            'quantity' => ($this->input->post('quantity') == null)?"":strtoupper($this->input->post('quantity')),
+        );
+
+        $create = $this->model_products->createv2($data);
+        
+        if($create == true) {
+            echo json_encode(true);
+        }
+        else {
+            echo json_encode(false);
+        }
+    }
+
+    public function searchProductByCategory()
+    {
+        $category = $this->input->post('product_category_id');
+        $is_active = $this->input->post('is_active');
+
+        $products_by_category = $this->model_products->getProductByCategory($category,$is_active);
+
+        $this->load->view('products/_productByCategory',['product_category'=>$category, 'productssss'=>$products_by_category]);
+
+    }
+
+    public function updateproduct()
+    {
+        if($this->input->post('change_status') == true)
+        {
+           $data = array(
+                'is_active' => ($this->input->post('is_active') == null)?"":strtoupper($this->input->post('is_active')),
+            );
+        }
+        else
+        {
+            $data = array(
+                'type' => ($this->input->post('type') == null)?"":strtoupper($this->input->post('type')),
+                'make' => ($this->input->post('make') == null)?"":strtoupper($this->input->post('make')),
+                'caliber' => ($this->input->post('caliber') == null)?"":strtoupper($this->input->post('caliber')),
+                'serial' => ($this->input->post('serial') == null)?"":strtoupper($this->input->post('serial')),
+                'date_acquired' => ($this->input->post('date_acquired') == null)?"":$this->input->post('date_acquired'),
+                'cost' => ($this->input->post('cost') == null)?"":$this->input->post('cost'),
+                'item' => ($this->input->post('item') == null)?"":strtoupper($this->input->post('item')),
+                'status' => ($this->input->post('status') == null)?"":strtoupper($this->input->post('status')),
+                'source' => ($this->input->post('source') == null)?"":strtoupper($this->input->post('source')),
+                'quantity' => ($this->input->post('quantity') == null)?"":strtoupper($this->input->post('quantity')),
+            );
+        }
+
+        $update = $this->model_products->updatev2($data, $this->input->post('id')); 
+
+        
+        if($update == true) {
+            echo json_encode(true);
+        }
+        else {
+            echo json_encode(false);
+        }
+    }
+
+
+    
 
 }
