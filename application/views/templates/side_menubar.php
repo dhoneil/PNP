@@ -137,6 +137,11 @@
 			  <a href="<?php echo base_url('suppliers') ?>">
 				<i class="fa fa-circle-o"></i> <span>Suppliers</span>
 			  </a>
+      </li>
+      <li id="SuppliersMenu">
+			  <a href="<?php echo base_url('locations') ?>">
+				<i class="fa fa-circle-o"></i> <span>Location</span>
+			  </a>
 			</li>
 			</ul>
 			</li>
