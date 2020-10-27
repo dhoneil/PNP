@@ -10,7 +10,7 @@ class Locations extends Admin_Controller
 
 		$this->not_logged_in();
 
-		$this->data['page_title'] = 'Locations';
+		$this->data['page_title'] = 'Location';
 
 		$this->load->model('model_locations');
 	}
