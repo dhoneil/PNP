@@ -55,7 +55,7 @@
             <div class="col-sm-9">
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title"><i class="fa fa-list"></i> List</h3>
+                        <h3 class="box-title"><i class="fa fa-list"></i> List of Location</h3>
                     </div>
                     <div class="box-body" id="productcategorylistarea">
 
@@ -165,6 +165,50 @@
        })//ajax end
     });
 
+    //update
+    $(document).on('click','.editlocation',function(){
+      var thiss = $(this);
+      var location_id = thiss.closest('tr').attr('location_id');
+      $('#addModallocation').modal('show');
+      
+      $('#editlocationid').css('display','none');
+      $('#editlocationid').val(location_id);
+      $('.select2').select2();
+   });
+
+   $(document).on('click','#btnupdate',function(e){
+      e.preventDefault();
+      var flag = true;
+      if (flag) {
+         if (confirm('Are you sure to update this fields?')) {
+                $.ajax({
+                url: "<?php echo base_url("locations/updatelocation");?>",
+                type:'POST',
+                async:true,
+                data:{
+                    id:$('#editlocationid').val(),
+                    location_name:$('#product_location_name').val(),
+                    is_active:$('#productstatus').val(),
+                },
+                success:function(data){
+                    if (data) {
+                        $('#btncloseedit-modal-location').trigger('click');
+                        $('.select2').select2();
+                          $('#searchcategory option[value='+selectedcategory+']').prop('selected', true);
+                        $('#btnsearch').trigger('click');
+                    }
+                    else{
+                        alert('something went wrong...')
+                    }
+                    
+                }
+                }) // ajax end
+            }
+      }
+      else{
+         e.preventDefault();
+      }
+   });
    
  });
 </script>

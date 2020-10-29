@@ -37,6 +37,15 @@ class Model_locations extends CI_Model
 		$query = $this->db->query($sql, array($productcategory_id,$is_active));
 		return $query->result_array();
 	}
+	public function updatelocationv2($data, $id)
+	{
+		if($data && $id) {
+			$this->db->where('ID', $id);
+			$update = $this->db->update('product_location', $data);
+			return ($update == true) ? true : false;
+		}
+	}
+	
 	// public function getLocationListByCategory()
 	// {
 	// 	$sql = "SELECT * FROM product_location";
