@@ -157,7 +157,7 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-             <li id="addReceiveNav"><a href="<?php echo base_url('receive/create') ?>"><i class="fa fa-circle-o"></i> Add Receive Order</a></li>
+             <li id="addReceiveNav"><a href="<?php echo base_url('receive/createv2') ?>"><i class="fa fa-circle-o"></i> Add Receive Items</a></li>
                 <li id="manageReceiveNav"><a href="<?php echo base_url('receive') ?>"><i class="fa fa-circle-o"></i> Manage Receives</a></li>
               </ul>
             </li>

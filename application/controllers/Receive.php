@@ -123,7 +123,8 @@ class Receive extends Admin_Controller
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
         	$this->data['products'] = $this->model_products->getActiveProductData();   
-			$this->data['suppliers'] = $this->model_suppliers->getActiveSuppliers(); 			
+			$this->data['suppliers'] = $this->model_suppliers->getActiveSuppliers(); 	
+			$this->data['locations']=$this->model_locations->getActiveProduct_Location();		
 
             $this->render_template('receive/create', $this->data);
         }	
@@ -391,6 +392,13 @@ class Receive extends Admin_Controller
 
 			  echo $html;
 		}
+	}
+
+	//new 
+	
+	public function createv2()
+	{
+        $this->render_template('receive/createv2', $this->data);
 	}
 
 }
