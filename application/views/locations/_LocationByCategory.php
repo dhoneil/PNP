@@ -2,9 +2,9 @@
    <table class="table table-condensed table-hover table-bordered">
       <thead>
          <tr>
-            <th style="vertical-align:middle;text-align:center;">LOCATION NAME</th>
-            <th style="vertical-align:middle;text-align:center;">STATUS</th>
-            <th style="vertical-align:middle;text-align:center;">OPTION</th>
+            <th style="">LOCATION NAME</th>
+            <th style="">STATUS</th>
+            <th style="">OPTION</th>
          </tr>
       </thead>
       <tbody>
@@ -14,13 +14,13 @@
                location_name="<?php echo $x['location_name'] ?>"
                is_active="<?php echo $x['is_active'] ?>"
             >
-              <td style="vertical-align:middle;text-align:center;"> <?php echo $x['location_name'] ?></td>
+              <td style=""> <?php echo $x['location_name'] ?></td>
                <?php if($x['is_active']==1):?>
-                  <td style="vertical-align:middle;text-align:center;">ACTIVE</td>
+                  <td style="">ACTIVE</td>
                <?php else:?>
-                    <td style="vertical-align:middle;text-align:center;">INACTIVE</td>
+                    <td style="">INACTIVE</td>
                 <?php endif; ?>
-               <td style="vertical-align:middle;text-align:center;">
+               <td style="">
                     <button type="button" class="btn btn-default editlocation"  style="margin:5px;">Edit</button> 
                     <button type="button" class="btn btn-warning" style="margin:5px;">Remove</button>
                </td>

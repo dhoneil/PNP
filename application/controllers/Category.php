@@ -28,13 +28,80 @@ class Category extends Admin_Controller
 		$this->render_template('category/index', $this->data);	
 	}	
 
+	public function indexv2()
+	{
+
+		if(!in_array('viewCategory', $this->permission)) {
+			redirect('dashboard', 'refresh');
+		}
+
+		
+
+		$this->render_template('category/indexv2', $this->data);	
+	}
+
+	public function save()
+	{
+		$data = array(
+			'name'=>strtoupper($this->input->post('name')),
+			'active'=>true,
+		);
+
+		$category_list = $this->model_category->search($this->input->post('name'));
+		if (count($category_list)>0) {
+			echo json_encode(false);
+		}
+		else{
+			$create = $this->model_category->create($data);
+		}
+
+		if ($create==true) {
+			echo json_encode(true);
+		}else{
+			echo json_encode(false);
+		}
+	}
+
+	public function search()
+	{
+		$name = $this->input->post('name');
+		$active = $this->input->post('is_active');
+
+		$category_list = $this->model_category->search($name);
+
+      $this->load->view('category/_category',['categories'=>$category_list]);
+	}
+
+	public function edit()
+	{
+		if ($this->input->post('change_status')==true) {
+			$data = array(
+				'active' => strtoupper($this->input->post('active'))
+			);
+		}
+		else{
+			$data = array(
+				'name' => strtoupper($this->input->post('name'))
+			);
+		}
+
+		$update = $this->model_category->update($data, $this->input->post('id')); 
+
+		if($update == true) {
+			echo json_encode(true);
+		}
+		else {
+			echo json_encode(false);
+		}
+	}
+
 	/*
 	* It checks if it gets the category id and retreives
 	* the category information from the category model and 
 	* returns the data into json format. 
 	* This function is invoked from the view page.
 	*/
-	public function fetchCategoryDataById($id) 
+	public function fetchCategoryDataById($id)
 	{
 		if($id) {
 			$data = $this->model_category->getCategoryData($id);

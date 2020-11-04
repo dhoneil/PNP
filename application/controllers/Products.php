@@ -306,17 +306,15 @@ class Products extends Admin_Controller
 
 
 
-
-
-
-
-
+    
 
     public function createv2()
     {
         if(!in_array('createProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
+
+        $this->data['categories'] = $this->model_category->getActiveCategroy();
 
         $this->render_template('products/createv2', $this->data);
     }
@@ -355,7 +353,6 @@ class Products extends Admin_Controller
         $products_by_category = $this->model_products->getProductByCategory($category,$is_active);
 
         $this->load->view('products/_productByCategory',['product_category'=>$category, 'productssss'=>$products_by_category]);
-
     }
 
     public function updateproduct()

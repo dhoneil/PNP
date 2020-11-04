@@ -16,6 +16,7 @@ class Receive extends Admin_Controller
 		$this->load->model('model_products');
 		$this->load->model('model_company');
 		$this->load->model('model_suppliers');
+		$this->load->model('model_locations');
 	}
 
 	/* 
@@ -124,7 +125,7 @@ class Receive extends Admin_Controller
 
         	$this->data['products'] = $this->model_products->getActiveProductData();   
 			$this->data['suppliers'] = $this->model_suppliers->getActiveSuppliers(); 	
-			$this->data['locations']=$this->model_locations->getActiveProduct_Location();		
+			//$this->data['locations']=$this->model_locations->getActiveProduct_Location();		
 
             $this->render_template('receive/create', $this->data);
         }	
@@ -398,7 +399,102 @@ class Receive extends Admin_Controller
 	
 	public function createv2()
 	{
+		$this->data['products'] = $this->model_products->getActiveProductDatav2();   
+		$this->data['suppliers'] = $this->model_suppliers->getActiveSuppliers();
+		$this->data['locations'] = $this->model_locations->getActiveProduct_Location();
         $this->render_template('receive/createv2', $this->data);
 	}
+
+	public function GetProductsByLocations_productcategory_id()
+	{
+		if ($this->input->post('prod_cat_id'))
+		{
+			echo $this->model_products->GetProductsByLocations_productcategory_id($this->input->post('prod_cat_id'));
+		}
+	}
+
+	public function GetProductInfoById()
+	{
+		if ($this->input->post('product_id')) {
+			$id = $this->input->post('product_id'); 
+			$this->db->select('cost');
+		    $this->db->from('productsv2');
+		    $this->db->where('id',$id);
+		    echo json_encode($this->db->get()->row()->cost);
+		}
+	}
+
+	public function getsupplierdata()
+	{
+		if ($this->input->post('supplier_id')) {
+			$supplier_id = $this->input->post('supplier_id');
+
+			$sql = "SELECT * FROM suppliers where id = ?";
+			$query = $this->db->query($sql, array($supplier_id));
+			$item = $query->row_array();
+
+		    echo json_encode(
+		    	array(
+		    		'address' => $item['supplier_address'],
+		    		'phone' => $item['supplier_phone'],
+		    	)
+		    );
+		}
+	}
+
+	public function save()
+	{
+		$ReceiveMasterData = array(
+			'bill_no' => 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4)),
+			'supplier_id' =>  $this->input->post('supplier_id'),
+			'discount' =>  $this->input->post('discount'),
+			'net_amount' =>  $this->input->post('net_amount'),
+			'paid_status' => 2,
+    		'user_id' => $this->session->userdata('id'),
+			'date_time' => $this->input->post('date_time')
+			// /'date_time' => strtotime($this->input->post('date_time').date("h:i:s"))
+		);
+
+		$insertMaster = $this->model_receiveorders->saveMaster($ReceiveMasterData);
+
+		$masterID = $this->db->insert_id();
+
+		$item_table = $this->input->post('item_table');
+
+		$insert = $this->model_receiveorders->saveDetails($item_table,$masterID);
+
+		echo json_encode(
+	    	array(
+	    		'status' => $insert
+	    	)
+	    );
+	}
+
+	public function search()
+	{
+		$receives = $this->model_receiveorders->getOrdersDatav2();
+		$this->load->view('receive/_receives',['receive_list'=>$receives]);
+	}
+
+	public function getitems()
+	{
+		$receive_id = $this->input->post('receive_id');
+
+		$itemlist = $this->model_receiveorders->getOrdersItems($receive_id);
+		
+		$this->load->view('receive/_receivedItems',['items'=>$itemlist, 'edit'=>$this->input->post('edit') ]);
+	}
+
+	public function deleteReceive()
+	{
+		$receive_id = $this->input->post('receive_id');
+		$deletestatus = $this->model_receiveorders->removev2($receive_id);
+		echo json_encode(
+	    	array(
+	    		'status' => $deletestatus
+	    	)
+	    );
+	}
+
 
 }

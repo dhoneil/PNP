@@ -7,12 +7,14 @@ class Model_receiveorders extends CI_Model
 		parent::__construct();
 	}
 
+
+
 	/* get the orders data */
 	public function getOrdersData($id = null)
 	{
 		
 		if($id) {
-			$sql = "SELECT a.*,b.supplier_name, b.supplier_address, b.supplier_phone   
+			$sql = "SELECT a.*,b.supplier_name, b.supplier_address, b.supplier_phone
 			FROM receive a left join suppliers b on b.id = a.supplier_id WHERE a.id = ?";
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
@@ -23,7 +25,34 @@ class Model_receiveorders extends CI_Model
 		FROM receive a left join suppliers b on b.id = a.supplier_id ORDER BY a.id DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+
+	public function getOrdersDatav2($id = null)
+	{
 		
+		if($id) {
+			$sql = "SELECT a.*,b.supplier_name, b.supplier_address, b.supplier_phone
+			FROM receivev2 a left join suppliers b on b.id = a.supplier_id WHERE a.id = ?";
+			$query = $this->db->query($sql, array($id));
+			return $query->row_array();
+		}
+
+		$sql = "SELECT a.id, a.bill_no, a.supplier_id, a.date_time, a.paid_status,a.discount, a.net_amount,
+		b.supplier_name, b.supplier_phone,b.supplier_address
+		FROM receivev2 a left join suppliers b on b.id = a.supplier_id ORDER BY a.id DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function getOrdersItems($order_id = null)
+	{
+		$sql = "SELECT r.*,i.id ITEM_ID,l.location_name,i.item item_name,c.name category_name FROM receive_item r
+			left join productsv2 i on r.product_id = i.id 
+			left join product_location l on r.location_id = l.id
+			left join categories c on i.product_category_id = c.id
+			WHERE r.receive_id = ?";
+		$query = $this->db->query($sql, array($order_id));
+		return $query->result_array();
 	}
 
 	// get the orders item data
@@ -177,11 +206,59 @@ class Model_receiveorders extends CI_Model
 		}
 	}
 
+	public function removev2($id)
+	{
+		if($id) {
+			$this->db->where('id', $id);
+			$delete = $this->db->delete('receivev2');
+
+			$this->db->where('receive_id', $id);
+			$delete_item = $this->db->delete('receive_item');
+
+			return ($delete == true && $delete_item) ? true : false;
+		}
+	}
+
 	public function countTotalPaidOrders()
 	{
 		$sql = "SELECT * FROM receive WHERE paid_status = ?";
 		$query = $this->db->query($sql, array(1));
 		return $query->num_rows();
 	}
+
+
+	public function saveMaster($ReceiveMasterData)
+	{
+		if($ReceiveMasterData) {
+			$insert = $this->db->insert('receivev2', $ReceiveMasterData);
+			return ($insert == true) ? true : false;
+		}
+	}
+
+	public function saveDetails($item_table,$masterID)
+	{
+		for ($x=0; $x <count($item_table) ; $x++) { 
+			$data[] = array(
+				'receive_id' =>$masterID,
+				'location_id' =>$item_table[$x]['location_id'],
+				'product_id' =>$item_table[$x]['product_id'],
+				'qty' =>$item_table[$x]['quantity'],
+				'rate' =>$item_table[$x]['rate'],
+				'amount' =>$item_table[$x]['rate'],
+			);
+		}
+
+		try {
+			//insert to db
+			for ($x=0; $x <count($item_table) ; $x++) { 
+				$this->db->insert('receive_item', $data[$x]);
+			}
+			return 'success';
+		} catch (Exception $e) {
+			return 'failed';
+		}
+	}
+
+
 
 }

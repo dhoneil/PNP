@@ -74,7 +74,7 @@
 
           <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
             <li id="categoryNav">
-              <a href="<?php echo base_url('category/') ?>">
+              <a href="<?php echo base_url('category/indexv2') ?>">
                 <i class="fa fa-circle-o"></i> <span>Category</span>
               </a>
             </li>
@@ -99,23 +99,9 @@
 			</ul></li>
 			
           <?php if(in_array('createProduct', $user_permission) || in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
-            <li class="treeview" id="mainProductNav">
-              <a href="#">
-                <i class="fa fa-cube"></i>
-                <span>Products</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <?php if(in_array('createProduct', $user_permission)): ?>
-                  <li id="addProductNav"><a href="<?php echo base_url('products/createv2') ?>"><i class="fa fa-circle-o"></i> Add Product <span class="label bg-green">NEW</span> </a></li>
-                <?php endif; ?>
-                <?php if(in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
-                <li id="manageProductNav"><a href="<?php echo base_url('products') ?>"><i class="fa fa-circle-o"></i> Manage Products</a></li>
-                <?php endif; ?>
-              </ul>
-            </li>
+            <?php if(in_array('createProduct', $user_permission)): ?>
+              <li id="addProductNav"><a href="<?php echo base_url('products/createv2') ?>"><i class="fa fa-circle-o"></i><i class="fa fa-cube"></i> Product </a></li>
+            <?php endif; ?>
           <?php endif; ?>
 			
 			
@@ -157,8 +143,8 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-             <li id="addReceiveNav"><a href="<?php echo base_url('receive/createv2') ?>"><i class="fa fa-circle-o"></i> Add Receive Items</a></li>
-                <li id="manageReceiveNav"><a href="<?php echo base_url('receive') ?>"><i class="fa fa-circle-o"></i> Manage Receives</a></li>
+             <li id="addReceiveNav"><a href="<?php echo base_url('receive/createv2') ?>"><i class="fa fa-circle-o"></i> IN</a></li>
+                <!-- <li id="manageReceiveNav"><a href="<?php echo base_url('receive') ?>"><i class="fa fa-circle-o"></i> Manage Receives</a></li> -->
               </ul>
             </li>
 
@@ -173,11 +159,11 @@
               </a>
               <ul class="treeview-menu">
                 <?php if(in_array('createOrder', $user_permission)): ?>
-                  <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Add Order</a></li>
+                  <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> OUT</a></li>
                 <?php endif; ?>
-                <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+                <!-- <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
                 <li id="manageOrdersNav"><a href="<?php echo base_url('orders') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
-                <?php endif; ?>
+                <?php endif; ?> -->
               </ul>
             </li>
           <?php endif; ?>

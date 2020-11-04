@@ -7,6 +7,18 @@ class Model_category extends CI_Model
 		parent::__construct();
 	}
 
+	public function search($name=null)
+	{
+		if ($name!=null) {
+			$sql = "SELECT * FROM categories where name = ?";
+		}else{
+			$sql = "SELECT * FROM categories";
+		}
+		
+		$query = $this->db->query($sql, array($name));
+		return $query->result_array();
+	}
+
 	/* get active brand infromation */
 	public function getActiveCategroy()
 	{
