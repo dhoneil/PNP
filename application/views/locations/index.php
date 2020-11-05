@@ -19,14 +19,13 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                        <label>Category</label>
-                        <select id="searchcategory" class="form-control " style="width: 100%;">
+                            <label>Category</label>
+                            <select id="searchcategory" class="form-control " style="width: 100%;">
                             <option value="">[ SELECT ]</option>
-                            <option value="1" selected="">FIREARMS</option>
-                            <option value="2">AMMUNITION</option>
-                            <option value="3">EQUIPMENTS</option>
-                            <option value="4">COVID-19 RESOURCES</option>
-                        </select>
+                            <?php foreach ($categories as $key => $cat):?>
+                                <option value="<?php echo $cat['id']?>"><?php echo $cat['name']?></option>
+                            <?php endforeach ?>
+                            </select>
                         </div>
                         <!-- <div class="form-group">
                         <label>Location</label>
@@ -66,22 +65,21 @@
     </section>
 </div>
 
-<div class="modal fade" id="addModallocation" style="display:none;">
+<div class="modal" id="addModallocation">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button id="btnclosemodal" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Add Location</h4>
       </div>
         <div class="modal-body">
             <div class="form-group">
-                <label>Select Product category</label>
-                <select id="product_category" class="form-control" style="width: 100%;">
-                        <option value="">[ SELECT ]</option>
-                        <option value="1" selected>Firearms</option>
-                        <option value="2">Ammunition</option>
-                        <option value="3">Equipments</option>
-                        <option value="4">Covid Resources</option>
+                <label>Category</label>
+                <select id="product_category" class="form-control " style="width: 100%;">
+                <option value="">[ SELECT ]</option>
+                <?php foreach ($categories as $key => $cat):?>
+                    <option value="<?php echo $cat['id']?>"><?php echo $cat['name']?></option>
+                <?php endforeach ?>
                 </select>
             </div>
             <div class="form-group">
@@ -106,6 +104,21 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+
+    function search() {
+        $.ajax({
+            url: "<?php echo base_url("locations/searchLocationByCategory");?>",
+            method:'POST',
+            async:true,
+            data:{
+                productcategory_id:$('#searchcategory').find(':selected').val(),
+                is_active:$('#searchstatus').find(':selected').val(),
+            },
+            success:function(data){
+                $('#productcategorylistarea').html(data);
+            }
+        })//ajax end
+    }
         
     $(".select2").select2();
     $(".numeric").numeric();
@@ -130,12 +143,10 @@
                },
                success:function(data){
                   if (data) {
-
                      var selectedcategory = $('#product_category').find(':selected').val();
                      $('#searchcategory option[value='+selectedcategory+']').prop('selected', true);
                      $('.select2').select2();
-                     $('#btnsearch').trigger('click');
-
+                     search()
                   }
                   else{
                      alert('something went wrong...')
@@ -151,28 +162,20 @@
         });
 
         $(document).on('click','#btnsearch',function(){
-        $.ajax({
-         url: "<?php echo base_url("locations/searchLocationByCategory");?>",
-         method:'POST',
-         async:true,
-         data:{
-            productcategory_id:$('#searchcategory').find(':selected').val(),
-            is_active:$('#searchstatus').find(':selected').val(),
-         },
-         success:function(data){
-            $('#productcategorylistarea').html(data);
-         }
-       })//ajax end
-    });
+            search()
+        });
 
     //update
     $(document).on('click','.editlocation',function(){
       var thiss = $(this);
       var location_id = thiss.closest('tr').attr('location_id');
+      var location_name = thiss.closest('tr').attr('location_name');
+      
       $('#addModallocation').modal('show');
       
       $('#editlocationid').css('display','none');
       $('#editlocationid').val(location_id);
+      $('#product_location_name').val(location_name);
       $('.select2').select2();
    });
 
@@ -181,29 +184,27 @@
       var flag = true;
       if (flag) {
          if (confirm('Are you sure to update this fields?')) {
-                $.ajax({
+            $.ajax({
                 url: "<?php echo base_url("locations/updatelocation");?>",
                 type:'POST',
                 async:true,
                 data:{
                     id:$('#editlocationid').val(),
-                    location_name:$('#product_location_name').val(),
+                    location_name:$('#product_location_name').val().trim(),
                     is_active:$('#productstatus').val(),
                 },
                 success:function(data){
                     if (data) {
-                        $('#btncloseedit-modal-location').trigger('click');
-                        $('.select2').select2();
-                          $('#searchcategory option[value='+selectedcategory+']').prop('selected', true);
-                        $('#btnsearch').trigger('click');
+                        search()
+                        $('#btnclosemodal').trigger('click');
                     }
                     else{
                         alert('something went wrong...')
                     }
                     
                 }
-                }) // ajax end
-            }
+            }) // ajax end
+        }
       }
       else{
          e.preventDefault();

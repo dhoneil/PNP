@@ -11,11 +11,14 @@ class Locations extends Admin_Controller
 		$this->not_logged_in();
 
 		$this->data['page_title'] = 'Location';
+		$this->load->model('model_category');
 		$this->load->model('model_locations');
 	}
     public function index()
     {
 		// $this->data['locations'] = $this->model_locations->getLocationListByCategory();   
+
+		$this->data['categories'] = $this->model_category->getActiveCategroy();
 		$this->render_template('locations/index', $this->data);	
 	}
 
@@ -51,11 +54,11 @@ class Locations extends Admin_Controller
 	public function updatelocation()
     { 
 		$data = array(
-			'location_name' => ($this->input->post('location_name') == null)?"":strtoupper($this->input->post('location_name')),
+			'location_name' =>strtoupper($this->input->post('location_name')),
 			'is_active' => ($this->input->post('is_active') == null)?"":strtoupper($this->input->post('is_active')),
 		);	
 
-        $update = $this->model_locations->updatelocationv2($data, $this->input->post('ID')); 
+        $update = $this->model_locations->updatelocationv2($data, $this->input->post('id')); 
 
         if($update == true) {
             echo json_encode(true);

@@ -36,6 +36,13 @@ class Model_products extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getActiveProductDatav2()
+	{
+		$sql = "SELECT * FROM productsv2 WHERE is_active = 1";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	public function create($data)
 	{
 		if($data) {
@@ -50,12 +57,34 @@ class Model_products extends CI_Model
 			return ($insert == true) ? true : false;
 		}
 	}
+
 	public function getProductByCategory($product_category_id = null, $is_active = null)
 	{
 		$sql = "SELECT * FROM productsv2 where product_category_id = ? and is_active = ?";
 		$query = $this->db->query($sql, array($product_category_id,$is_active));
 		return $query->result_array();
 	}
+
+	public function GetProductsByLocations_productcategory_id($product_category_id = null)
+	{
+		$this->db->where('product_category_id',$product_category_id);
+		$this->db->order_by('item','ASC');
+		$query = $this->db->get('productsv2');
+		$output = '<option value="">[ SELECT ]</option>';
+		foreach ($query->result() as $x) {
+			$output .= '<option value="'.$x->id.'" >'.$x->item.'</option>';
+		}
+		return $output;
+	}
+	
+
+	public function allreceives()
+	{
+		$sqlbisanunsanasiya = "SELECT * FROM TABLENAME";
+		$queryyyyyy = $this->db->query($sqlbisanunsanasiya);
+		return $queryyyyyy->result_array();
+	}
+
 
 	public function updatev2($data, $id)
 	{
@@ -91,5 +120,7 @@ class Model_products extends CI_Model
 		$query = $this->db->query($sql);
 		return $query->num_rows();
 	}
+
+
 
 }

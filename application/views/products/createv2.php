@@ -26,10 +26,9 @@
                <label>Category</label>
                <select id="searchcategory" class="form-control " style="width: 100%;">
                   <option value="">[ SELECT ]</option>
-                  <option value="1" selected>FIREARMS</option>
-                  <option value="2">AMMUNITION</option>
-                  <option value="3">EQUIPMENTS</option>
-                  <option value="4">COVID-19 RESOURCES</option>
+                  <?php foreach ($categories as $key => $cat):?>
+                     <option value="<?php echo $cat['id']?>"><?php echo $cat['name']?></option>
+                  <?php endforeach ?>
                </select>
             </div>
 
@@ -78,16 +77,17 @@
 
                <div class="col-sm-12">
                   <div class="col-sm-12">
-                     <div class="form-group ">
+
+                     <div class="form-group">
                         <label>Category</label>
-                        <select id="product_category" class="form-control" style="width: 100%;">
+                        <select id="product_category" class="form-control " style="width: 100%;">
                            <option value="">[ SELECT ]</option>
-                           <option value="1">FIREARMS</option>
-                           <option value="2">AMMUNITION</option>
-                           <option value="3">EQUIPMENTS</option>
-                           <option value="4">COVID-19 RESOURCES</option>
+                           <?php foreach ($categories as $key => $cat):?>
+                              <option value="<?php echo $cat['id']?>"><?php echo $cat['name']?></option>
+                           <?php endforeach ?>
                         </select>
                      </div>
+                     
                   </div>
                </div>
 
@@ -311,6 +311,13 @@
 </div>
 
 
+<style type="text/css">
+    .box{
+        box-shadow: 5px 10px 18px #dbd7d7;
+    }
+</style>
+
+
 <script type="text/javascript">
   $(document).ready(function() {
     $(".select2").select2();
@@ -318,11 +325,11 @@
     $('.productform').hide();
     
 
-    $(document).on('change','#product_category',function(){
-       var thisvalue = $(this).find(':selected').val();
-       $('.productform').hide();
-       $('#'+thisvalue+'').show();
-    });
+   $(document).on('change','#product_category',function(){
+      var thisvalue = $(this).find(':selected').val();
+      $('.productform').hide();
+      $('#'+thisvalue+'').show();
+   });
 
 
     $(document).on('click','#btnaddnewproduct',function(){
@@ -365,7 +372,7 @@
       if (flag) {
          if (confirm('Are you sure to add this Firearm?')) {
             $.ajax({
-               url: "<?php echo base_url("products/saveproduct");?>",
+               url: "<?php echo base_url("products/saveproduct");?>", 
                type:'POST',
                data:{
                   product_category_id:$('#product_category').find(':selected').val(),
@@ -495,6 +502,7 @@
          e.preventDefault();
       }
     });
+    
     $(document).on('submit','#covidform',function(e){
        e.preventDefault();
       var flag = true;
