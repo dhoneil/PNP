@@ -55,4 +55,27 @@ class Model_suppliers extends CI_Model
 		}
 	}
 
+	//new
+	/* public function getSupplierData($id = null)
+	{
+		if($id) {
+			$sql = "SELECT * FROM suppliers where id = ?";
+			$query = $this->db->query($sql, array($id));
+			return $query->row_array();
+		}
+
+		$sql = "SELECT * FROM suppliers ORDER BY id DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	} */
+	 public function getSupplierListByID()
+	 {
+ 		$sql = "SELECT * FROM suppliers";
+	 	$query = $this->db->query($sql, array(1));
+		return $query->result_array();
+	 }
+	 
+	 
+	
+
 }

@@ -59,9 +59,9 @@
   </div>
 </div>
 
-<div class="modal fade" id="addModallocation" style="display:none;">
+<div class="modal fade" id="addModallocation" style="display:none;" >
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content" style="width:100%;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Add Recieve Item</h4>
@@ -70,29 +70,33 @@
                 <div class="box box-solid">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Supplier Name</label>
-                                    <select id="product_category" class="form-control" style="width: 100%;">
-                                            <option value="">[ SELECT ]</option>
+                                    <select id="product_supplier" class="form-control" style="width: 100%;">
+                                            <?php foreach ($suppliersss as $k => $x): ?>
+                                            <option data-info="<?php echo $x['supplier_address'] ?>"  data-infos="<?php echo $x['supplier_phone'] ?>" value="<?php echo $x['id'] ?>" selected><?php echo $x['supplier_name']?></option>
+                                            <?php endforeach ?>
                                     </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Supplier Address</label>
-                                    <input type="text" value="" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-3">        
+                                <div class="form-group">
+                                    <label>Supplier Address</label>
+                                    <input id="supplieraddress" type="text" value="<?php echo $x['supplier_address']?>" class="form-control data" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Supplier Phone</label>
-                                    <input type="text" value="" class="form-control">
+                                    <input id="supplierphone" type="text" value="<?php echo $x['supplier_phone']?>" class="form-control data" readonly>
                                 </div>
+                            </div>
+                            <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Date</label>
-                                    <select id="product_category" class="form-control" style="width: 100%;">
-                                            <option value="">[ SELECT ]</option>
-                                    </select>
-                                </div>
+                                    <label for="dateofcreation">Date</label>
+                                    <input type="date" class="form-control" id="dateofcreation" >
+                                </div>              
                             </div>
                         </div>
                     </div>
@@ -100,22 +104,59 @@
                 <div class="box box-solid">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-lg-2">
                                 <div class="form-group">
-                                        <label>Select Product category</label>
-                                        <select id="product_category" class="form-control" style="width: 100%;">
-                                                <option value="">[ SELECT ]</option>
-                                                <option value="1" selected>Firearms</option>
-                                                <option value="2">Ammunition</option>
-                                                <option value="3">Equipments</option>
-                                                <option value="4">Covid Resources</option>
-                                        </select>
-                                    </div>
+                                    <label>Category</label>
+                                    <select id="product_category" class="form-control" style="width: 100%;">
+                                            <option value="">[ SELECT ]</option>
+                                            <option value="1" selected>Firearms</option>
+                                            <option value="2">Ammunition</option>
+                                            <option value="3">Equipments</option>
+                                            <option value="4">Covid Resources</option>
+                                    </select>
                                 </div>
-                            <div class="col-md-6">
+                            </div>
+                            <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label for="brand_name">Product location</label>
-                                    <input type="text" class="form-control" id="product_location_name" name="product_location" placeholder="Enter Product location" autocomplete="off">
+                                    <label for="brand_name">Location</label>
+                                    <select name="" id="" class="form-control">
+                                      <option value="">[ SELECT ]</option>
+                                      <?php foreach ($locationdata as $k => $x): ?>
+                                        <option value="<?php echo $x['productcategory_id'] ?>" productcategory_id="<?php echo $x['productcategory_id']  ?>" location_id="<?php echo $x['ID']  ?>"><?php echo $x['location_name'] ?></option>
+                                      <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label for="brand_name">Product</label>
+                                    <select name="" id="" class="form-control">
+                                      <option value="">[ SELECT ]</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-1">
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input id="supplieraddress" type="text" value="" class="form-control data" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Rate</label>
+                                    <input id="supplieraddress" type="text" value="" class="form-control data" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input id="supplieraddress" type="text" value="" class="form-control data" readonly>
+                                </div>               
+                            </div>
+                            <div class="col-lg-1">
+                                <div class="btn-group">
+                                    <label>Option</label>
+                                    <button class="btn btn-default">Add</button>
                                 </div>
                             </div>
                         </div>
@@ -129,12 +170,23 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 <script type="text/javascript">
     $(document).ready(function(){
-    $(".select2").select2();
+        $(".select2").select2();
 
-    $(document).on('click','#btnaddnewreceived',function(){
-      $('#addModallocation').modal('show');
-    });
+        $(document).on('click','#btnaddnewreceived',function(){
+        $('#addModallocation').modal('show');
+        });
+
+        $('#product_supplier').change(function(){
+            $('#supplieraddress').val( $(this).find('option:selected').data('info'));
+            $('#supplierphone').val( $(this).find('option:selected').data('infos')); 
+        });
+        
+        $('#product_supplier').change(function(){
+            $('#supplieraddress').val( $(this).find('option:selected').data('info'));
+            $('#supplierphone').val( $(this).find('option:selected').data('infos')); 
+        });
     })
 </script>

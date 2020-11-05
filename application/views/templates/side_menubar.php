@@ -140,7 +140,7 @@
       </li>
       <li id="SuppliersMenu">
 			  <a href="<?php echo base_url('locations') ?>">
-				<i class="fa fa-circle-o"></i> <span>Location</span>
+				<i class="fa fa-circle-o"></i> <span>Locations</span>
 			  </a>
 			</li>
 			</ul>

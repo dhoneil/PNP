@@ -184,4 +184,16 @@ class Model_receiveorders extends CI_Model
 		return $query->num_rows();
 	}
 
+	//new
+	public function getSupplierValueById()
+	{
+	 	$supplier_id = $this->input->post('id');
+	 	if($supplier_id) {
+ 		$aupplier_data = $this->model_supplier->getSupplierData($supplier_id);
+ 		echo json_encode($supplier_id);
+	 	}
+	 }
+
+
+
 }

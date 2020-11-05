@@ -91,8 +91,6 @@
                 <table class="table table-bordered" id="product_info_table">
                   <thead>
                     <tr>
-                      <th style="width:10%">Category</th>
-                      <th style="width:20%">Location</th>
                       <th style="width:20%">Product</th>
                       <th style="width:10%">Qty</th>
                       <th style="width:10%">Rate</th>
@@ -100,7 +98,6 @@
                       <th style="width:10%"><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>
-
                    <tbody>
                      <tr id="row_1">
                        <td>

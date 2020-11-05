@@ -46,11 +46,18 @@ class Model_locations extends CI_Model
 		}
 	}
 	
-	// public function getLocationListByCategory()
-	// {
-	// 	$sql = "SELECT * FROM product_location";
-	// 	$query = $this->db->query($sql, array(1));
-	// 	return $query->result_array();
-	// }
+	 public function getLocationListByCategory()
+	 {
+	 	$sql = "SELECT * FROM product_location";
+	 	$query = $this->db->query($sql,array(1));
+	 	return $query->result_array();
+	}
+	public function getLocationListByID()
+	 {
+ 		$sql = "SELECT * FROM product_location";
+	 	$query = $this->db->query($sql, array(1));
+		return $query->result_array();
+	 }
+	
 	
 }
